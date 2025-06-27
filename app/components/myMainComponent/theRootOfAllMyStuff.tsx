@@ -5,14 +5,25 @@ import {
   FluentProvider,
   webDarkTheme,
   webLightTheme,
-  Option
-} from "@fluentui/react-components";
+  Option,
+  Label,
+  tokens,
+  makeStyles,
+  mergeClasses,
+} from "@fluentui/react-components";7
 import type { OptionOnSelectData, SelectionEvents, Theme } from "@fluentui/react-components";
 import { darkTheme as PPTDarkTheme, lightTheme as PPTLightTheme } from "../../themes/powerpointTheme";
 import { MyCustomToolbar } from "../myCustomToolbar";
 
+
+const useStyles = makeStyles({
+  root: { display: 'flex', flexDirection: 'column', padding: tokens.spacingHorizontalM }, // we use the tokens for consistent spacing https://react.fluentui.dev/?path=/docs/theme-spacing--docs
+
+});
+
 export const TheRootOfAllMyStuff = () => {
     const [theme, setTheme] = React.useState<Theme>(PPTLightTheme);
+    const classes = useStyles();
 
     const handleThemeSelection = (_event: SelectionEvents, data: OptionOnSelectData) => {
         const selectedThemeName = data.optionValue;
@@ -41,11 +52,17 @@ export const TheRootOfAllMyStuff = () => {
         }
     };
 
+// See theme information here: https://react.fluentui.dev/?path=/docs/concepts-developer-theming--docs
+// Never use theme CSS variables directly! The CSS variables implementation of the theme is internal to the library. 
+// We might eventually decide to change the variable names, hash them or even use direct values instead of some variables. 
+// Always use the tokens to access the theme.
   return (
     <FluentProvider theme={theme}>
-      <div>
+      <div className={mergeClasses('ui-component', classes.root)}>
         <h1>The Root Of All My Stuff</h1>
-        <Dropdown onOptionSelect={handleThemeSelection} defaultValue={"pptLightTheme"} >   
+
+        <Label htmlFor="themeSelector" required={true}>Select a theme:</Label>
+        <Dropdown id="themeSelector" onOptionSelect={handleThemeSelection} defaultValue={"pptLightTheme"} >   
             <Option key="webLightTheme" value="webLightTheme">
                 Web Light Theme
             </Option>

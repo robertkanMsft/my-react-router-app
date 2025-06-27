@@ -5,6 +5,7 @@ import {
   type Theme,
 } from "@fluentui/react-components";
 
+// create themes using the ui https://react.fluentui.dev/?path=/docs/theme-theme-designer--docs
 const powerpoint: BrandVariants = {
   10: "#060201",
   20: "#23130B",
